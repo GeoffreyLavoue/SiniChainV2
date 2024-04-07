@@ -19,7 +19,7 @@ const Contact = () => {
     <Box p={8}>
       <Box textAlign="center" mb={5}>
         <Link href="/">
-          <Button colorScheme="red" mb={4}>Home</Button>
+          <Button colorScheme="cyan" mb={4}>Home</Button>
         </Link>
       </Box>
       <VStack spacing={8} align="stretch">
@@ -38,7 +38,7 @@ const Contact = () => {
               <FormLabel>Message</FormLabel>
               <Textarea size="lg" />
             </FormControl>
-            <Button type="submit" colorScheme="red" size="lg" width="full">Envoyer</Button>
+            <Button type="submit" colorScheme="cyan" size="lg" width="full">Envoyer</Button>
           </VStack>
         </form>
       </VStack>

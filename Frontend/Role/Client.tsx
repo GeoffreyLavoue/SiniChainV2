@@ -1,32 +1,23 @@
-import React from 'react';
-import {
-  Box,
-  Button,
-  FormControl,
-  FormLabel,
-  Input,
-  VStack,
-  Textarea,
-  Heading,
-  Container,
-  SimpleGrid,
-  GridItem,
-  Spinner,
-  Td,
-  Flex
-} from '@chakra-ui/react';
+'use client'
 
-import { useState } from 'react';
-import { useToast, Toast, Text, Tbody } from '@chakra-ui/react';
-import { useAccount } from 'wagmi';
-import { useWriteContract } from 'wagmi';
-import { driverManagementABI, driverManagementAddress, vehicleManagementABI, vehicleManagementAddress, sinisterManagementABI, sinisterManagementAddress } from '@/constant';
-import { useReadContract } from 'wagmi';
-import { useEffect } from 'react';
-import '../app/globals.css'
+// Importation des hooks et composants React et Chakra UI nécessaires.
+import { useState, useEffect } from "react";
+import {
+  Box, Button, FormControl, FormLabel, Input, VStack, Textarea,
+  Heading, Container, SimpleGrid, Flex, List, ListItem, Spinner,
+  Text, useToast
+} from "@chakra-ui/react";
+// Importation des hooks wagmi pour l'interaction avec les contrats Ethereum.
+import { useAccount, useReadContract, useWriteContract } from "wagmi";
+// Importation des adresses et ABIs des contrats intelligents depuis un module constant.
+import { driverManagementABI, driverManagementAddress, vehicleManagementABI,
+  vehicleManagementAddress, sinisterManagementABI, sinisterManagementAddress } from '@/constant';
+// Importation des styles globaux.
+import '../app/globals.css';
 
 const Client = () => {
 
+   // Définition des interfaces pour structurer les données des profils conducteur.
   interface DriverProfile {
     name: string;
     location: string;
@@ -35,27 +26,39 @@ const Client = () => {
     birthday: string;
   }
 
+  // Définition des interfaces pour structurer les données des sinistres.
+  interface Sinistre {
+    id: string;
+    date: string;
+    vehicleId: number;
+    description: string;
+    status: number;
+  }
+
+  // Utilisation des hooks pour gérer l'état local et interagir avec les contrats intelligents.
   const { address } = useAccount();
   const toast = useToast();
-
+  const { writeContract, error: writeError, isPending: isWriteLoading } = useWriteContract();
+  const [driverProfile, setDriverProfile] = useState<DriverProfile | null>(null);
+  const [vehiclesList, setVehiclesList] = useState<string[]>([]);
+  const [sinistreList, setSinistreList] = useState<Sinistre[]>([]);
+  //Conducteur
   const [name, setName] = useState('');
   const [birthday, setBirthday] = useState('');
   const [location, setLocation] = useState('');
   const [licenseNumber, setLicenseNumber] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  //Voiture
   const [make, setMake] = useState('');
   const [model, setModel] = useState('');
   const [color, setColor] = useState('');
   const [year, setYear] = useState('');
+  //Sinistre
   const [date, setDate] = useState('');
   const [vehicleId, setVehiculeId] = useState('');
   const [description, setDescription] = useState('');
-  const [sinistres, setSinistres] = useState([]);
-  const { writeContract, error: writeError, isPending: isWriteLoading } = useWriteContract();
-  const [driverProfile, setDriverProfile] = useState<DriverProfile | null>(null);
-  const [vehiclesList, setVehiclesList] = useState<string[]>([]);
-  const [sinistreList, setSinistreList] = useState<string[]>([]);
 
+  // Définition de la fonction pour enregistrer un conducteur.
   const registerDriver = async () => {
     writeContract({
       address: driverManagementAddress,
@@ -64,18 +67,8 @@ const Client = () => {
       args: [name, birthday, location, licenseNumber, phoneNumber],
     });
   }
-  useEffect(() => {
-    if (writeError) {
-      toast({
-        title: "Erreur lors de l'enregistrement du profil",
-        description: writeError.message,
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-    }
-  }, [writeError, toast]);
 
+  // Définition de la fonction pour enregistrer des véhicules.
   const registerVehicle = async () => {
     writeContract({
       address: vehicleManagementAddress,
@@ -84,18 +77,8 @@ const Client = () => {
       args: [make, model, color, year],
     });
   }
-  useEffect(() => {
-    if (writeError) {
-      toast({
-        title: "Erreur lors de l'enregistrement du profil",
-        description: writeError.message,
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-    }
-  }, [writeError, toast]);
 
+  // Définition de la fonction pour enregistrer des sinistres.
   const registerSinistre = async () => {
     writeContract({
       address: sinisterManagementAddress,
@@ -105,6 +88,7 @@ const Client = () => {
     });
   }
 
+  // Utilise le hook useReadContract de wagmi pour récupérer le profil du conducteur depuis la blockchain.
   const { data, isError, isLoading } = useReadContract({
     address: driverManagementAddress,
     abi: driverManagementABI,
@@ -112,36 +96,15 @@ const Client = () => {
     args: [address],
   });
 
-  useEffect(() => {
-    console.log(data); // Pour voir la structure des données retournées
-    if (data) {
-      const profile = {
-        name: '',
-        location: '',
-        licenseNumber: '',
-        phoneNumber: '',
-        birthday: '',
-        ...data, // Fusion avec les valeurs par défaut pour garantir la structure
-      };
-
-      // Vous pouvez ici ajouter des vérifications supplémentaires pour chaque champ si nécessaire
-      setDriverProfile(profile);
-    }
-  }, [data]);
-
+  // Utilise useReadContract pour récupérer tous les véhicules associés à un conducteur.
   const { data: vehiclesData, isError: isVehiclesError, isLoading: isVehiclesLoading } = useReadContract({
-    address: vehicleManagementAddress, // L'adresse de votre contrat de gestion des véhicules
-    abi: vehicleManagementABI, // ABI de votre contrat de gestion des véhicules
+    address: vehicleManagementAddress, 
+    abi: vehicleManagementABI, 
     functionName: 'getAllVehicles',
-    args: [address], // L'adresse du conducteur courant
+    args: [address], 
   });
 
-  useEffect(() => {
-    if (Array.isArray(vehiclesData)) {
-      setVehiclesList(vehiclesData.map(vehicle => typeof vehicle === 'string' ? vehicle : JSON.stringify(vehicle)));
-    }
-  }, [vehiclesData]);
-
+  // Utilise useReadContract pour récupérer tous les sinistres déclarés par le conducteur.
   const { data: sinistresData, isError: isSinistresError, isLoading: isSinistresLoading } = useReadContract({
     address: sinisterManagementAddress,
     abi: sinisterManagementABI,
@@ -149,42 +112,101 @@ const Client = () => {
     args: [address],
   });
 
+  // Un hook useEffect pour afficher un toast en cas d'erreur lors de l'écriture sur un contrat.
+  useEffect(() => {
+    if (writeError) {
+      toast({
+        title: "Erreur lors de l'enregistrement du profil",
+        description: writeError.message,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+  }, [writeError, toast]);
+
+  // useEffect pour traiter les données du profil du conducteur une fois récupérées.
+  useEffect(() => {
+    console.log(data); 
+    if (data) {
+      const profile = {
+        name: '',
+        location: '',
+        licenseNumber: '',
+        phoneNumber: '',
+        birthday: '',
+        ...data, 
+      };
+
+      setDriverProfile(profile);
+    }
+  }, [data]);
+
+  // useEffect pour traiter les données des véhicules une fois récupérées.
+  useEffect(() => {
+    if (Array.isArray(vehiclesData)) {
+      setVehiclesList(vehiclesData.map(vehicle => typeof vehicle === 'string' ? vehicle : JSON.stringify(vehicle)));
+    }
+  }, [vehiclesData]);
+
+  // useEffect pour traiter les données des sinistres une fois récupérées.
   useEffect(() => {
     if (Array.isArray(sinistresData)) {
-      setSinistreList(sinistresData.map(sinistres => 
-        typeof sinistres === 'string' ? sinistres : JSON.stringify(sinistres, (key, value) =>
-          typeof value === 'bigint' ? value.toString() : value // convertit BigInt en String
-        )
-      ));
+      const formattedSinistres: Sinistre[] = sinistresData.map(sinistreRaw => {
+        const { id, date, vehicleId, description, status } = sinistreRaw;
+        const sinistreFormatted: Sinistre = {
+          id, 
+          date,
+          vehicleId: Number(vehicleId),
+          description,
+          status: Number(status)
+        };
+        return sinistreFormatted;
+      });
+      setSinistreList(formattedSinistres);
     }
   }, [sinistresData]);
   
+  // Fonction pour convertir un statut numérique de sinistre en texte explicatif.
+  const getStatusText = (status: number): string => {
+    switch(status) {
+      case 0:
+        return 'Envoyé';
+      case 1:
+        return 'Pris en charge';
+      case 2:
+        return 'Accepté';
+      case 3:
+        return 'Refusé';
+      default:
+        return 'Inconnu'; 
+    }
+  };
 
-
-
+  // Gère la soumission du formulaire pour l'enregistrement d'un conducteur.
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Empêcher le rechargement de la page
     registerDriver();
   };
 
+  // Gère la soumission du formulaire pour l'enregistrement d'un véhicule.
   const handleSubmitVehicle = async (f: React.FormEvent<HTMLFormElement>) => {
     f.preventDefault(); // Empêcher le rechargement de la page
     registerVehicle();
   };
 
+  // Gère la soumission du formulaire pour la déclaration d'un sinistre.
   const handleSubmitSinister = async (g: React.FormEvent<HTMLFormElement>) => {
     g.preventDefault(); // Empêcher le rechargement de la page
     registerSinistre();
   };
 
-
+   // Rendu du composant
   return (
 
     <Container maxW="container.xl" py={5}>
       <Heading as="h1" mb={5}>Gestion Client</Heading>
-
       <SimpleGrid columns={3} spacing={10}>
-        {/* Colonne pour le profil du conducteur et sa liste */}
         <VStack spacing={10}>
           <Box borderWidth="1px" borderRadius="lg" overflow="hidden" p={4}>
             <Heading as="h2" size="md" mb={4}>Profil Conducteur</Heading>
@@ -225,12 +247,10 @@ const Client = () => {
                 <div>Localisation: {driverProfile.location}</div>
                 <div>Numéro de licence: {driverProfile.licenseNumber}</div>
                 <div>Numéro de téléphone: {driverProfile.phoneNumber}</div>
-                </Text>
+              </Text>
             </Box>
           )}
         </VStack>
-
-        {/* Colonne pour l'enregistrement des véhicules et leur liste */}
         <VStack spacing={10}>
           <Box borderWidth="1px" borderRadius="lg" overflow="hidden" p={4}>
             <Heading as="h2" size="md" mb={4}>Enregistrement des Véhicules</Heading>
@@ -257,23 +277,21 @@ const Client = () => {
             </form>
           </Box>
           <Box borderWidth="1px" borderRadius="lg" overflow="hidden" p={4}>
-  <Heading as="h2" size="md" mb={4}>Liste des Véhicules</Heading>
-  {isVehiclesLoading && <Spinner />}
-  {isVehiclesError && <Text>Erreur lors du chargement des véhicules</Text>}
-  {!isVehiclesLoading && vehiclesList.length > 0 && (
-    <Flex wrap="wrap"> {/* Ajoutez wrap="wrap" pour permettre aux éléments de passer à la ligne si l'espace horizontal est insuffisant. */}
-      {vehiclesList.map((vehicle, index) => (
-        <Box key={index} p={5} shadow="md" borderWidth="1px" m={2}> {/* Ajoutez une marge autour de chaque Box pour de l'espace entre eux. */}
-          <Text>{vehicle}</Text>
-        </Box>
-      ))}
-    </Flex>
-  )}
-  {vehiclesList.length === 0 && !isVehiclesLoading && <Text>Aucun véhicule enregistré</Text>}
-</Box>
+            <Heading as="h2" size="md" mb={4}>Liste des Véhicules</Heading>
+            {isVehiclesLoading && <Spinner />}
+            {isVehiclesError && <Text>Erreur lors du chargement des véhicules</Text>}
+            {!isVehiclesLoading && vehiclesList.length > 0 && (
+              <Flex wrap="wrap"> 
+                {vehiclesList.map((vehicle, index) => (
+                  <Box key={index} p={5} shadow="md" borderWidth="1px" m={2}> 
+                    <Text>{vehicle}</Text>
+                  </Box>
+                ))}
+              </Flex>
+            )}
+            {vehiclesList.length === 0 && !isVehiclesLoading && <Text>Aucun véhicule enregistré</Text>}
+          </Box>
         </VStack>
-
-        {/* Colonne pour la déclaration de sinistres et leur liste */}
         <VStack spacing={10}>
           <Box borderWidth="1px" borderRadius="lg" overflow="hidden" p={4}>
             <Heading as="h2" size="md" mb={4}>Déclaration de Sinistres</Heading>
@@ -300,16 +318,22 @@ const Client = () => {
             {isSinistresLoading && <Spinner />}
             {isSinistresError && <Text>Erreur lors du chargement des sinistres</Text>}
             {!isSinistresLoading && sinistreList.length > 0 && (
-              <VStack>
-                {sinistreList.map((sinistres, index) => (
-                  <Box key={index} p={5} shadow="md" borderWidth="1px">
-                    <Text>{sinistres}</Text>
-                  </Box>
+              <List spacing={3}>
+                {sinistreList.map((sinistre, index) => (
+                  <ListItem key={index}>
+                    <Box p={5} shadow="md" borderWidth="1px">
+                      <Text>Date: {sinistre.date}</Text>
+                      <Text>Véhicule ID: {sinistre.vehicleId}</Text>
+                      <Text>Description: {sinistre.description}</Text>
+                      <Text>Status: {getStatusText(sinistre.status)}</Text>
+                    </Box>
+                  </ListItem>
                 ))}
-              </VStack>
+              </List>
             )}
             {sinistreList.length === 0 && !isSinistresLoading && <Text>Aucun sinistre enregistré</Text>}
           </Box>
+
         </VStack>
       </SimpleGrid>
     </Container>

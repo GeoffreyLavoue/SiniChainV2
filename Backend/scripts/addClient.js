@@ -1,11 +1,11 @@
 // scripts/addClient.js
 const hre = require("hardhat");
-const ownerAddress = "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266";
+const ownerAddress = "0x49460515940337F7bC485D4e5434808B3A152227";
 
 async function main() {
     // Obtenir les contrats déployés
     const InsuranceSystem = await hre.ethers.getContractFactory("ClientManagement");
-    const insuranceSystem = await InsuranceSystem.attach("0x5fbdb2315678afecb367f032d93f642f64180aa3");
+    const insuranceSystem = await InsuranceSystem.attach("0xc8ea7182C2a84df68D4E0f6Cdd6fe91b2c53fDE1");
 
     // Obtenir un Signer pour l'adresse du propriétaire
     const [ownerSigner] = await hre.ethers.getSigners();
@@ -16,7 +16,7 @@ async function main() {
     }
 
     // Appel de la fonction addClient avec le Signer
-    const tx = await insuranceSystem.connect(ownerSigner).registerClient("0x23618e81E3f5cdF7f54C3d65f7FBc0aBf5B21E8f");
+    const tx = await insuranceSystem.connect(ownerSigner).registerClient("0xB9d95b069e0a9465AdE80F943074e6f2898F6356");
     await tx.wait();
 
     console.log("Client ajouté avec succès");

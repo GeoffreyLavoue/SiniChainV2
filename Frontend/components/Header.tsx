@@ -1,11 +1,15 @@
 'use client'
 
-import { Flex, Text, Image } from '@chakra-ui/react';
+// Importation des composants nécessaires de Chakra UI pour la mise en page et l'affichage.
+import { Flex, Image } from '@chakra-ui/react';
+// Importation du composant ConnectButton de RainbowKit pour gérer la connexion au portefeuille.
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import '../app/globals.css'
+// Importation des styles globaux.
+import '../app/globals.css';
 
+// Définition du composant fonctionnel Header.
 const Header = () => {
-
+  // Rendu du composant
     return (
         <Flex
             justifyContent="space-between"
@@ -15,10 +19,10 @@ const Header = () => {
             <Image
                 src="/titre.png"
                 alt="Sinichain.js Logo"
-                htmlWidth="250px" // Utilisez htmlWidth et htmlHeight pour définir la taille de l'image
+                htmlWidth="250px"
                 htmlHeight="250px"
-                objectFit="cover" // Assure que l'image couvre l'espace disponible sans être déformée
-                flexGrow={0} // Empêche l'image de grandir mais permet de réduire
+                objectFit="cover"
+                flexGrow={0}
                 flexShrink={0}
             />
 

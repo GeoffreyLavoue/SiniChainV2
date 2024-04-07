@@ -6,7 +6,7 @@ const Communaute = () => {
     <Box p={5}>
       <VStack spacing={4} align="center">
         <Link href="/">
-          <Button colorScheme="red">Home</Button>
+          <Button colorScheme="cyan">Home</Button>
         </Link>
         <Text fontSize="2xl" fontWeight="bold">Communauté SiniChain</Text>
         <Image src="/logo.png" alt="Logo Sinichain" /> {/* Assurez-vous que le chemin d'accès au logo est correct */}

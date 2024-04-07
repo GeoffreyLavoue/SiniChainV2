@@ -9,7 +9,7 @@ export default function Documentation() {
       </Heading>
       <Box as="main" padding="5">
       <Link href="/">
-          <Button colorScheme="red" mb={4}>Home</Button>
+          <Button colorScheme="cyan" mb={4}>Home</Button>
         </Link>
 
 
