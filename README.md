@@ -38,22 +38,28 @@ SiniCHAIN est un outil de suivi de sinistre automobile à l'aide de la blockchai
 
 **ClientManagement** :  Dans ce contrat, il n'y a pas de transfert d'Ether ou d'appels à des contrats externes non fiables qui pourraient permettre une telle réentrance. Donc, votre contrat n'est pas vulnérable aux attaques de reentrancy.
 
+**DriverManagement** : Ce contrat ne transfère pas d'Ether ni n'appelle d'autres fonctions de contrats externes de manière qui permettrait une telle réentrance. Par conséquent, il n'est pas vulnérable aux attaques de reentrancy.
 
 
 ### DoS par erreur inattendue
 
 **ClientManagement** : Ce contrat n'interagit pas avec des contrats externes de manière qui dépend de leur exécution réussie pour fonctionner. Ainsi, il n'est pas sujet aux attaques DoS par erreur inattendue.
 
+**DriverManagement** : Ce contrat fait une vérification avec clientManagement.isClient(msg.sender), qui est une interaction externe. Cependant, cette interaction ne semble pas susceptible de provoquer une condition d'erreur qui bloquerait le contrat — elle vérifie simplement un état sans modifier de données externes. Il n'y a donc pas de risque évident de DoS par erreur inattendue à partir de cette interaction.
+
 
 ### DoS par limite de Gaz
 
 **ClientManagement** : La fonction getAllClients() pourrait théoriquement devenir vulnérable si la liste clients devenait extrêmement grande. Cela pourrait nécessiter une quantité de gaz supérieure à la limite de bloc pour exécuter la fonction, empêchant ainsi le propriétaire de récupérer la liste des clients. Cependant, dans ce projey, seul le Owner (Assureur) peut enregistrer des clients et appeler getAllClient(). Cela limite donc l'accès. Il n'y a donc pas de vulnérabilité potentielle à une attaque DoS par limite de gaz.
 
+**DriverManagement** : Dans ce contrat, la fonction getAllDrivers() pourrait devenir couteuse en gaz si le tableau drivers grandit significativement. Toutefois, comme pour ClientManagement, cette fonction est restreinte au propriétaire du contrat (onlyOwner), le risque d'une attaque malveillante est limité à l'auto-sabotage, ce qui est peu probable. Il existe une préoccupation théorique concernant la limite de gaz, mais elle est modérée par le contrôle d'accès.
+
 
 ### Force Feeding
 
-**ClientManagement** : Ce contrat ne gère pas l'Ether et ne modifie pas son comportement en fonction de son solde, donc il n'est pas vulnérable à une attaque de force feeding.
+**ClientManagement** : Ce contrat ne gère pas l'Ether et ne modifie pas son comportement en fonction de son solde, donc il n'est pas vulnérable à une attaque de Force Feeding.
 
+**DriverManagement** : Ce contrat ne gère pas d'Ether et ne change pas de comportement basé sur son solde en Ether. Il n'est donc pas vulnérable à une attaque de Force Feeding.
 
 ## Autres points de considération
 
