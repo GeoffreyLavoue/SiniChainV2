@@ -96,15 +96,21 @@ Pour installer et exécuter `SiniChainV2` localement, suivez les étapes ci-dess
 
 2. **Installer les dépendances :**
 
-  `npm install`
+  ```bash
+  npm install
+  ```
 
 3. **Changer de répertoire :**
 
-  `cd Frontend`
+  ```bash
+  cd Frontend
+  ```
 
 4. **Exécuter l'application :**
 
-  `npm run dev`
+  ```bash
+  npm run dev
+  ```
 
 Accédez à **http://localhost:3000** dans votre navigateur pour voir l'application en action.
 
