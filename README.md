@@ -83,3 +83,24 @@ SiniChain est un outil de suivi de sinistre automobile à l'aide de la blockchai
 ## Déploiement et Tests
 
 Le déploiement se fait sur Sépolia car nous avons trouvé pertinent l'utilisation de la blockchain Ethereum. Concernant les tests, j'ai testé tous les scénarios pertinents.
+
+## Installation
+
+Pour installer et exécuter `SiniChainV2` localement, suivez les étapes ci-dessous :
+
+1. **Cloner le dépôt :**
+
+git clone https://github.com/GeofffreyLavoue/SiniChainV2.git
+
+2. **Installer les dépendances :**
+
+npm install
+
+3. **Changer de répertoire :**
+
+cd Frontend
+
+4. **Exécuter l'application :**
+
+npm run dev
+
