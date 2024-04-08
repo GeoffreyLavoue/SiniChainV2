@@ -114,3 +114,5 @@ Pour installer et exécuter `SiniChainV2` localement, suivez les étapes ci-dess
 
 Accédez à **http://localhost:3000** dans votre navigateur pour voir l'application en action.
 
+**(N'oubliez pas de faire toutes les configurations requises en mettant l'id de votre fournisseur de noeud (Infura ou Alchemy), l'addresse de votre wallet test, les ABI et tous le reste dans un fichier Constant/index.ts)**
+
