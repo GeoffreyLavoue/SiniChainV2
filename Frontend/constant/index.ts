@@ -1,22 +1,16 @@
 
-export const walletConnect = "970ce288515d329356bc264eb52983ad"
+export const walletConnect = ""
 
-export const infuraID = "4402eea5cd834d7591282df136b64a65"
-export const rpcUrl = "https://sepolia.infura.io/v3/4402eea5cd834d7591282df136b64a65"
-export const etherscanAPIKey = "SCXPCQBZ3N9KMS7U17694F2JXG7ZI2Q4SK"
+export const infuraID = ""
+export const rpcUrl = ""
+export const etherscanAPIKey = ""
 
-export const ownerAddress = "0x49460515940337F7bC485D4e5434808B3A152227"
-//export const ownerAddress = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+export const ownerAddress = ""
 
 export const clientManagementAddress = "0xc8ea7182C2a84df68D4E0f6Cdd6fe91b2c53fDE1"
 export const driverManagementAddress = "0xf559ee9971B463550Eaa87ef3ed89700C78469f6"
 export const vehicleManagementAddress = "0xFAAe594c0d35f090e68F30f2F253591Ccdf14c1C"
 export const sinisterManagementAddress = "0xCBC4CcA55D5f80D623609D0CdcCfBE550B46caeA"
-
-/*export const clientManagementAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"
-export const driverManagementAddress = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
-export const vehicleManagementAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
-export const sinisterManagementAddress = "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9"*/
 
 
 export const clientManagementABI = [
