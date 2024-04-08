@@ -90,7 +90,9 @@ Pour installer et exécuter `SiniChainV2` localement, suivez les étapes ci-dess
 
 1. **Cloner le dépôt :**
 
-  ```git clone https://github.com/GeofffreyLavoue/SiniChainV2.git```
+  ```bash
+  git clone https://github.com/GeofffreyLavoue/SiniChainV2.git
+  ```
 
 2. **Installer les dépendances :**
 
