@@ -36,14 +36,23 @@ SiniCHAIN est un outil de suivi de sinistre automobile à l'aide de la blockchai
 
 ### Reentrancy
 
+**ClientManagement** :  Dans ce contrat, il n'y a pas de transfert d'Ether ou d'appels à des contrats externes non fiables qui pourraient permettre une telle réentrance. Donc, votre contrat n'est pas vulnérable aux attaques de reentrancy.
+
+
 
 ### DoS par erreur inattendue
+
+**ClientManagement** : Ce contrat n'interagit pas avec des contrats externes de manière qui dépend de leur exécution réussie pour fonctionner. Ainsi, il n'est pas sujet aux attaques DoS par erreur inattendue.
 
 
 ### DoS par limite de Gaz
 
+**ClientManagement** : La fonction getAllClients() pourrait théoriquement devenir vulnérable si la liste clients devenait extrêmement grande. Cela pourrait nécessiter une quantité de gaz supérieure à la limite de bloc pour exécuter la fonction, empêchant ainsi le propriétaire de récupérer la liste des clients. Cependant, dans ce projey, seul le Owner (Assureur) peut enregistrer des clients et appeler getAllClient(). Cela limite donc l'accès. Il n'y a donc pas de vulnérabilité potentielle à une attaque DoS par limite de gaz.
+
 
 ### Force Feeding
+
+**ClientManagement** : Ce contrat ne gère pas l'Ether et ne modifie pas son comportement en fonction de son solde, donc il n'est pas vulnérable à une attaque de force feeding.
 
 
 ## Autres points de considération
