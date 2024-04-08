@@ -36,9 +36,11 @@ SiniCHAIN est un outil de suivi de sinistre automobile à l'aide de la blockchai
 
 ### Reentrancy
 
-**ClientManagement** :  Dans ce contrat, il n'y a pas de transfert d'Ether ou d'appels à des contrats externes non fiables qui pourraient permettre une telle réentrance. Donc, votre contrat n'est pas vulnérable aux attaques de reentrancy.
+**ClientManagement** :  Dans ce contrat, il n'y a pas de transfert d'Ether ou d'appels à des contrats externes non fiables qui pourraient permettre une telle réentrance. Donc, **ce contrat n'est pas vulnérable aux attaques de reentrancy.**
 
-**DriverManagement** : Ce contrat ne transfère pas d'Ether ni n'appelle d'autres fonctions de contrats externes de manière qui permettrait une telle réentrance. Par conséquent, il n'est pas vulnérable aux attaques de reentrancy.
+**DriverManagement** : Ce contrat ne transfère pas d'Ether ni n'appelle d'autres fonctions de contrats externes de manière qui permettrait une telle réentrance. Par conséquent, **il n'est pas vulnérable aux attaques de reentrancy.**
+
+**VehicleManagement** : Ce contrat ne fait pas de tels appels externes qui enverraient des fonds ou qui seraient susceptibles de permettre une exécution indésirable en parallèle. Il interagit avec DriverManagement, mais seulement pour vérifier l'état (comme isDriverProfileCreated), et non pour effectuer des opérations complexes ou des transferts de fonds. Ainsi, **il n'est pas vulnérable aux attaques de réentrance.**
 
 
 ### DoS par erreur inattendue
