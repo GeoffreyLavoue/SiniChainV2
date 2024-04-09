@@ -25,7 +25,7 @@ SiniChain est un outil de suivi de sinistre automobile à l'aide de la blockchai
 ## Interaction avec le Contrat
 
 - **Utilisation de wagmi** pour interagir avec le contrat intelligent depuis le front.
-- **Fonctionnalités** telles que l'ajout de clients uniquement si l'adresse qui le fait est celle qui a déployé le smart contract.
+- **Fonctionnalités** telles que l'ajout de clients uniquement si l'adresse qui le fait est celle qui a déployé le smart contract (Assureur).
 
 ## Sécurité et Gestion
 
